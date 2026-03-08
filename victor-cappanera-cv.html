@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victor Cappanera — Microsoft 365 Administrator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --muted2: #94a3b8;
+    --green: #34d399;
+    --radius: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---- BACKGROUND GRID ---- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---- GLOW ---- */
+  .glow {
+    position: fixed;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+    top: -200px; right: -200px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow2 {
+    position: fixed;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,140,248,0.06) 0%, transparent 70%);
+    bottom: 100px; left: -100px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---- LAYOUT ---- */
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ---- LANG TOGGLE ---- */
+  .lang-bar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0 0;
+    gap: 8px;
+  }
+  .lang-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .lang-btn.active, .lang-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(56,189,248,0.08);
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 60px 0 50px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.25);
+    color: var(--green);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(44px, 7vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--muted2);
+    max-width: 520px;
+    line-height: 1.8;
+  }
+  .hero-avatar {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    object-fit: cover;
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .hero-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(56,189,248,0.2);
+  }
+
+  /* ---- SECTION ---- */
+  section { padding: 60px 0 0; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* ---- CONTACT CHIPS ---- */
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all .2s;
+    font-family: 'DM Mono', monospace;
+  }
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(56,189,248,0.06);
+    transform: translateY(-1px);
+  }
+  .chip svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ---- EXPERIENCE ---- */
+  .job-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .job-card:hover { border-color: rgba(56,189,248,0.35); }
+  .job-header {
+    padding: 22px 24px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    user-select: none;
+  }
+  .job-company {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .job-role {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .job-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .job-chevron {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .3s;
+    flex-shrink: 0;
+  }
+  .job-card.open .job-chevron {
+    background: rgba(56,189,248,0.1);
+    border-color: var(--accent);
+    transform: rotate(180deg);
+  }
+  .job-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s cubic-bezier(.4,0,.2,1);
+  }
+  .job-card.open .job-body { max-height: 1000px; }
+  .job-body-inner {
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+  .job-body-inner p {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(56,189,248,0.07);
+    border: 1px solid rgba(56,189,248,0.18);
+    color: var(--accent);
+  }
+  .tag.purple {
+    background: rgba(129,140,248,0.07);
+    border-color: rgba(129,140,248,0.2);
+    color: var(--accent2);
+  }
+
+  /* ---- SKILLS GRID ---- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .skill-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all .2s;
+  }
+  .skill-item:hover {
+    border-color: rgba(56,189,248,0.3);
+    background: rgba(56,189,248,0.04);
+  }
+  .skill-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .skill-dot.purple { background: var(--accent2); }
+  .skill-dot.green { background: var(--green); }
+
+  /* ---- CERTS / EDUCATION ---- */
+  .edu-grid { display: grid; gap: 10px; }
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    transition: border-color .2s;
+  }
+  .edu-card:hover { border-color: rgba(129,140,248,0.35); }
+  .edu-name { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 2px; }
+  .edu-school { font-size: 12px; color: var(--muted2); }
+  .edu-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    white-space: nowrap;
+  }
+
+  /* ---- LANG PILLS ---- */
+  .lang-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .lang-pill {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    min-width: 160px;
+  }
+  .lang-name { font-size: 14px; font-weight: 500; }
+  .lang-level {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: auto;
+  }
+  .lang-flag { font-size: 20px; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    margin-top: 80px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .5px;
+  }
+
+  /* ---- ANIMATIONS ---- */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp .6s forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .3s; }
+  .delay-4 { animation-delay: .4s; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-avatar { width: 80px; height: 80px; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ---- HIDDEN LANG ---- */
+  [data-lang] { display: none; }
+  body.es [data-lang="es"],
+  body.en [data-lang="en"] { display: block; }
+  body.es .lang-inline-es,
+  body.en .lang-inline-en { display: inline; }
+  .lang-inline-es, .lang-inline-en { display: none; }
+</style>
+</head>
+<body class="es">
+
+<div class="glow"></div>
+<div class="glow2"></div>
+
+<div class="wrap">
+
+  <!-- LANG TOGGLE -->
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('es')" id="btn-es">ES</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero fade-in">
+    <div>
+      <div class="hero-badge">
+        <span data-lang="es">Disponible para nuevas oportunidades</span>
+        <span data-lang="en">Open to new opportunities</span>
+      </div>
+      <h1>Victor <span>Cappanera</span></h1>
+      <div class="hero-title">Microsoft 365 Administrator · Exchange · Cloud</div>
+      <p data-lang="es">
+        Administrador Cloud y Microsoft 365 con amplia experiencia en entornos Exchange Online e híbridos a gran escala. Especializado en seguridad de correo, automatización con PowerShell, Teams, SharePoint y proyectos de migración complejos.
+      </p>
+      <p data-lang="en">
+        Cloud & Microsoft 365 Administrator with strong experience managing large-scale Exchange Online and hybrid environments. Specialized in mail security, PowerShell automation, Teams, SharePoint and complex migration projects.
+      </p>
+
+      <div class="contact-row">
+        <a class="chip" href="mailto:vcappanera@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          vcappanera@gmail.com
+        </a>
+        <a class="chip" href="tel:+34687035608">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg>
+          +34 687 035 608
+        </a>
+        <a class="chip" href="https://www.linkedin.com/in/victor-cappanera-marco-baa181108/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5a1.75 1.75 0 0 1-1.75 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          LinkedIn
+        </a>
+        <span style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;padding: 10px 4px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Barcelona, España
+        </span>
+      </div>
+    </div>
+    <div class="hero-avatar" style="font-size:48px;">👨‍💻</div>
+  </header>
+
+  <!-- EXPERIENCE -->
+  <section class="fade-in delay-1">
+    <div class="section-label">
+      <span data-lang="es">Experiencia Profesional</span>
+      <span data-lang="en">Work Experience</span>
+    </div>
+
+    <!-- Ambit BST -->
+    <div class="job-card open" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">Ambit BST</div>
+          <div class="job-role">
+            <span data-lang="es">Administrador Microsoft 365 / Ingeniero de Sistemas</span>
+            <span data-lang="en">Microsoft 365 Administrator / System Engineer</span>
+          </div>
+          <div class="job-period">Sept 2023 – Dic 2025 · 2 <span class="lang-inline-es">años 4 meses</span><span class="lang-inline-en">years 4 months</span> · Sant Cugat del Vallès · Híbrido</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Ingeniero de Microsoft 365 y Exchange especializado en entornos empresariales e híbridos, dando soporte a las operaciones globales de <strong>Boehringer Ingelheim</strong> dentro de un equipo internacional. Resolución avanzada de incidencias L2/L3 de alto impacto, gestión de seguridad de correo, y auditorías profundas con análisis de logs (message trace, unified audit logs, threat explorer).</p>
+          <p data-lang="en">Microsoft 365 & Exchange Engineer in enterprise and hybrid environments, supporting global operations for <strong>Boehringer Ingelheim</strong> within an international team. Advanced L2/L3 troubleshooting of high-impact incidents, mail security operations, and deep log analysis (message trace, unified audit logs, threat explorer).</p>
+          <p data-lang="es">Gestión de políticas de Entra ID (Azure AD), identidad y control de acceso, cumplimiento normativo. Automatización avanzada con PowerShell. Experiencia con Proofpoint, SailPoint, Valimail, Fact24, ServiceNow (ITIL 4).</p>
+          <p data-lang="en">Entra ID (Azure AD) policy management, identity and access control, compliance. Advanced PowerShell automation. Experienced with Proofpoint, SailPoint, Valimail, Fact24, ServiceNow (ITIL 4).</p>
+          <div class="tag-row">
+            <span class="tag">Exchange Online</span>
+            <span class="tag">Exchange Hybrid</span>
+            <span class="tag">EOP Security</span>
+            <span class="tag">Entra ID</span>
+            <span class="tag">PowerShell</span>
+            <span class="tag">Teams</span>
+            <span class="tag">SharePoint</span>
+            <span class="tag purple">Proofpoint</span>
+            <span class="tag purple">SailPoint</span>
+            <span class="tag purple">ServiceNow</span>
+            <span class="tag purple">ITIL 4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inetum - Admin -->
+    <div class="job-card" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">Inetum</div>
+          <div class="job-role">
+            <span data-lang="es">Administrador de Servicios O365</span>
+            <span data-lang="en">O365 Services Administrator</span>
+          </div>
+          <div class="job-period">Nov 2022 – Sept 2023 · 11 <span class="lang-inline-es">meses</span><span class="lang-inline-en">months</span> · Barcelona</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Gestión de incidencias y solicitudes relacionadas con Exchange, Mail, SharePoint, Teams y OneDrive. Parte de un proyecto de gestión de más de <strong>200.000 cuentas de usuarios</strong>, salas, servidores y recursos. Scripts PowerShell y Bash para automatización.</p>
+          <p data-lang="en">Managed incidents and requests related to Exchange, Mail, SharePoint, Teams and OneDrive. Part of a project managing over <strong>200,000 user accounts</strong>, rooms, servers and resources. PowerShell and Bash scripts for automation.</p>
+          <div class="tag-row">
+            <span class="tag">Office 365</span>
+            <span class="tag">Exchange 2016</span>
+            <span class="tag">SharePoint</span>
+            <span class="tag">Teams</span>
+            <span class="tag">OneDrive</span>
+            <span class="tag purple">PowerShell</span>
+            <span class="tag purple">Bash</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inetum - Técnico -->
+    <div class="job-card" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">Inetum</div>
+          <div class="job-role">
+            <span data-lang="es">Técnico Nivel 2</span>
+            <span data-lang="en">Level 2 Technician</span>
+          </div>
+          <div class="job-period">Jul 2021 – Nov 2022 · 1 <span class="lang-inline-es">año 5 meses</span><span class="lang-inline-en">year 5 months</span> · Barcelona</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Soporte a incidencias en servidores File, Backup, Grupos de Permisos, Restores, Exchange 2016 y O365. Gestión de migraciones masivas, escalados y contacto con proveedores y cliente.</p>
+          <p data-lang="en">Incident support for File Servers, Backup, Permission Groups, Restores, Exchange 2016 and O365. Mass migration management, escalations and supplier/client coordination.</p>
+          <div class="tag-row">
+            <span class="tag">Exchange 2016</span>
+            <span class="tag">O365</span>
+            <span class="tag">File Servers</span>
+            <span class="tag purple">Migraciones</span>
+            <span class="tag purple">Netbackup</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PSS -->
+    <div class="job-card" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">PSS Tecnologías</div>
+          <div class="job-role">
+            <span data-lang="es">Técnico Nivel 2</span>
+            <span data-lang="en">Level 2 Technician</span>
+          </div>
+          <div class="job-period">Jun 2020 – Jul 2021 · 1 <span class="lang-inline-es">año 2 meses</span><span class="lang-inline-en">year 2 months</span> · Barcelona</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Soporte en correo electrónico Exchange 2016 y O365, Windows Server, gestión de usuarios, grupos y permisos en Active Directory, backups con Netbackup.</p>
+          <p data-lang="en">Email support for Exchange 2016 and O365, Windows Server, user/group/permission management in Active Directory, backups with Netbackup.</p>
+          <div class="tag-row">
+            <span class="tag">Windows Server</span>
+            <span class="tag">Active Directory</span>
+            <span class="tag">Exchange 2016</span>
+            <span class="tag purple">Netbackup</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Setting -->
+    <div class="job-card" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">Setting Consultoría TI</div>
+          <div class="job-role">
+            <span data-lang="es">Técnico Informático</span>
+            <span data-lang="en">IT Technician</span>
+          </div>
+          <div class="job-period">Dic 2019 – Mar 2020 · 4 <span class="lang-inline-es">meses</span><span class="lang-inline-en">months</span> · Barcelona</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Soporte microinformático para Sorigué y Banc de Sang: red, VoIP, Active Directory, SAP, O365, instalación de software, reparación y renovación de equipos e impresoras.</p>
+          <p data-lang="en">Microcomputer support for Sorigué and Banc de Sang: networking, VoIP, Active Directory, SAP, O365, software installation, equipment repair and renewal.</p>
+          <div class="tag-row">
+            <span class="tag">Active Directory</span>
+            <span class="tag">SAP</span>
+            <span class="tag">O365</span>
+            <span class="tag purple">VoIP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Damm -->
+    <div class="job-card" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">Damm</div>
+          <div class="job-role">
+            <span data-lang="es">Helpdesk Nivel 1</span>
+            <span data-lang="en">Helpdesk Level 1</span>
+          </div>
+          <div class="job-period">Jul 2019 – Oct 2019 · 4 <span class="lang-inline-es">meses</span><span class="lang-inline-en">months</span> · Barcelona</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Gestión de peticiones e incidencias de Office365, teléfonos Android/iOS, SAP, permisos de usuarios y grupos, renovación de equipos, Lotus Notes.</p>
+          <p data-lang="en">Management of Office365 requests and incidents, Android/iOS phones, SAP, user and group permissions, equipment renewal, Lotus Notes.</p>
+          <div class="tag-row">
+            <span class="tag">Office 365</span>
+            <span class="tag">SAP</span>
+            <span class="tag purple">Lotus Notes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indra -->
+    <div class="job-card" onclick="toggleJob(this)">
+      <div class="job-header">
+        <div>
+          <div class="job-company">Indra</div>
+          <div class="job-role">
+            <span data-lang="es">Helpdesk Agent</span>
+            <span data-lang="en">Helpdesk Agent</span>
+          </div>
+          <div class="job-period">Jul 2018 – Jul 2019 · 1 <span class="lang-inline-es">año</span><span class="lang-inline-en">year</span> · Barcelona</div>
+        </div>
+        <div class="job-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p data-lang="es">Asistencia técnica a usuarios de la Generalitat de Catalunya mediante herramienta de ticketing Remedy. Gestión de incidencias, escalamientos, usuarios VIP e incidencias masivas.</p>
+          <p data-lang="en">Technical support for Generalitat de Catalunya users using Remedy ticketing tool. Incident management, escalations, VIP users and mass incidents.</p>
+          <div class="tag-row">
+            <span class="tag">Remedy</span>
+            <span class="tag purple">Soporte N1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="fade-in delay-2">
+    <div class="section-label">
+      <span data-lang="es">Habilidades Técnicas</span>
+      <span data-lang="en">Technical Skills</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-item"><span class="skill-dot"></span>Microsoft 365 Admin</div>
+      <div class="skill-item"><span class="skill-dot"></span>Exchange Online</div>
+      <div class="skill-item"><span class="skill-dot"></span>Exchange Hybrid</div>
+      <div class="skill-item"><span class="skill-dot"></span>Exchange On-Premises</div>
+      <div class="skill-item"><span class="skill-dot"></span>Entra ID / Azure AD</div>
+      <div class="skill-item"><span class="skill-dot"></span>Exchange Online Protection</div>
+      <div class="skill-item"><span class="skill-dot"></span>Microsoft Defender</div>
+      <div class="skill-item"><span class="skill-dot"></span>PowerShell Automation</div>
+      <div class="skill-item"><span class="skill-dot purple"></span>Microsoft Teams</div>
+      <div class="skill-item"><span class="skill-dot purple"></span>SharePoint Online</div>
+      <div class="skill-item"><span class="skill-dot purple"></span>OneDrive</div>
+      <div class="skill-item"><span class="skill-dot purple"></span>Active Directory</div>
+      <div class="skill-item"><span class="skill-dot purple"></span>Windows Server</div>
+      <div class="skill-item"><span class="skill-dot purple"></span>ServiceNow (ITIL 4)</div>
+      <div class="skill-item"><span class="skill-dot green"></span>Proofpoint</div>
+      <div class="skill-item"><span class="skill-dot green"></span>SailPoint</div>
+      <div class="skill-item"><span class="skill-dot green"></span>Valimail</div>
+      <div class="skill-item"><span class="skill-dot green"></span>Power BI</div>
+      <div class="skill-item"><span class="skill-dot green"></span>SPF / DKIM / DMARC</div>
+      <div class="skill-item"><span class="skill-dot green"></span>MFA / Conditional Access</div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="fade-in delay-3">
+    <div class="section-label">
+      <span data-lang="es">Formación</span>
+      <span data-lang="en">Education</span>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">
+            <span data-lang="es">Grado Superior – Programación Web</span>
+            <span data-lang="en">Higher Degree – Web Programming</span>
+          </div>
+          <div class="edu-school">La Salle de Gracia, Barcelona</div>
+        </div>
+        <div class="edu-year">2016 – 2018</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">
+            <span data-lang="es">Grado Superior – Programación Multiplataforma</span>
+            <span data-lang="en">Higher Degree – Cross-Platform Programming</span>
+          </div>
+          <div class="edu-school">La Salle de Gracia, Barcelona</div>
+        </div>
+        <div class="edu-year">2015 – 2016</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">
+            <span data-lang="es">CFGS – Administración de Sistemas en Red</span>
+            <span data-lang="en">CFGS – Network Systems Administration</span>
+          </div>
+          <div class="edu-school">Salesians de Sarrià, Barcelona</div>
+        </div>
+        <div class="edu-year">2013 – 2015</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="fade-in delay-3">
+    <div class="section-label">
+      <span data-lang="es">Certificaciones y Cursos</span>
+      <span data-lang="en">Certifications & Courses</span>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">AZ-900 Microsoft Azure Fundamentals</div>
+          <div class="edu-school">Udemy · Cloud Computing</div>
+        </div>
+        <div class="edu-year">Feb 2026</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">SC-300 – Identity & Access Administrator</div>
+          <div class="edu-school">Udemy · Microsoft Entra ID</div>
+        </div>
+        <div class="edu-year">2025</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">ITIL® 4 Foundation</div>
+          <div class="edu-school">Udemy · Service Management</div>
+        </div>
+        <div class="edu-year">2025</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-name">Power BI Desktop: Analyze and Visualize Data</div>
+          <div class="edu-school">Barcelona Activa</div>
+        </div>
+        <div class="edu-year">2025</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <section class="fade-in delay-4">
+    <div class="section-label">
+      <span data-lang="es">Idiomas</span>
+      <span data-lang="en">Languages</span>
+    </div>
+    <div class="lang-pills">
+      <div class="lang-pill">
+        <span class="lang-flag">🇪🇸</span>
+        <span class="lang-name">Español</span>
+        <span class="lang-level"><span data-lang="es">Nativo</span><span data-lang="en">Native</span></span>
+      </div>
+      <div class="lang-pill">
+        <span class="lang-flag">🇬🇧</span>
+        <span class="lang-name">English</span>
+        <span class="lang-level"><span data-lang="es">Intermedio</span><span data-lang="en">Intermediate</span></span>
+      </div>
+      <div class="lang-pill">
+        <span class="lang-flag">🏴󠁥󠁳󠁣󠁴󠁿</span>
+        <span class="lang-name">Català</span>
+        <span class="lang-level"><span data-lang="es">Nativo</span><span data-lang="en">Native</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Victor Cappanera Marco · Barcelona, España · 2026</p>
+    <a class="chip" href="mailto:vcappanera@gmail.com" style="font-size:12px;padding:7px 14px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      <span data-lang="es">Contactar</span>
+      <span data-lang="en">Contact me</span>
+    </a>
+  </footer>
+
+</div>
+
+<script>
+  function setLang(lang) {
+    document.body.classList.remove('es', 'en');
+    document.body.classList.add(lang);
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+  }
+
+  function toggleJob(card) {
+    card.classList.toggle('open');
+  }
+
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section').forEach(s => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(20px)';
+    s.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(s);
+  });
+</script>
+</body>
+</html>
